@@ -6,8 +6,15 @@ Public SugarOpportunityId As String
 Public SugarContactId As String
 Public SugarQuoteId As String
 Public ExistingRecord As Boolean
+Public ActiveSheet As String
 
 Sub SendToSugarCRM()
+    Application.ScreenUpdating = False
+    Sheets("IN-N-OUT").Visible = True
+    
+    ActiveSheet = Application.ActiveSheet.Name
+    Sheets("IN-N-OUT").Select
+    
     ExcelProvider.Initialize
 
     ApplicationProvider.CallsMade = 0
@@ -28,6 +35,9 @@ Sub SendToSugarCRM()
         
         frmStartup.Show (0)
     End If
+    
+    Sheets(ActiveSheet).Select
+    Sheets("IN-N-OUT").Visible = False
 End Sub
 
 Public Function SendDataToFathymFlow() As String
@@ -113,6 +123,9 @@ Public Function SendDataToFathymFlow() As String
     
     MinutesElapsed = Format((Timer - StartTime) / 86400, "hh:mm:ss")
     SetStatus ("This code ran successfully in " & MinutesElapsed & " minutes.")
+    
+    Sheets(ActiveSheet).Select
+    Sheets("IN-N-OUT").Visible = False
     
     Application.ScreenUpdating = True
     
@@ -585,3 +598,4 @@ Public Function UpdateQuote(ByVal quoteId As String, ByVal products As Collectio
     UpdateQuote = True
     
 End Function
+
